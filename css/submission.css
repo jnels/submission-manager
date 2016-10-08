@@ -1,0 +1,27 @@
+
+/* Header  * * * * * * * * * * * */
+.navbar {
+    background-color: #e2d7ee;
+    box-shadow: 0 0 5px #9c77c4;
+    border-radius: 0;
+}
+
+.login {
+    color: #2b1a3f;
+    margin: 18px;
+}
+
+
+/* Form Elements * * * * * * * * */
+textarea{
+    min-height: 115px;
+}
+
+/* Media Queries * * * * * * * * */
+@media (min-width: 768px) {
+    /* Form Elements */
+    .form-horizontal .control-label {
+        text-align: left;
+        padding-right: 0;
+    }
+}
