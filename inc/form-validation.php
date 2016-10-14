@@ -18,7 +18,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $submission_data = [
         "title"=>trim(filter_input(INPUT_POST,"title", FILTER_SANITIZE_STRING)),
         "genre"=>trim(filter_input(INPUT_POST,"genre", FILTER_SANITIZE_STRING)),
-        "cover-letter"=>trim(filter_input(INPUT_POST,"cover-letter", FILTER_SANITIZE_STRING))
+        "cover_letter"=>trim(filter_input(INPUT_POST,"cover_letter", FILTER_SANITIZE_STRING))
     ];
 
     $user_id = get_user_id($db, $user_data);
@@ -27,7 +27,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         add_user($db, $user_data);
     }
 
-    new_submission($db, $user_data, )
+    new_submission($db, $submission_data, $user_id);
 }
 
 function get_user_id($db, $user_data) {
@@ -66,21 +66,22 @@ function add_user($db, $user_data) {
     }
 }
 
-function new_submission($db) {
+function new_submission($db, $submission_data, $user_id) {
     try {
-        $submission_date = getdate();
+        $submission_date = date("mdy");
+        $file_path = $submission_date . $user_id;
 
         $sql = "INSERT INTO submission_info (user_id, submission_date, title, genre, cover_letter, file_path)
-        VALUES (:user_id, :submission_date, :title, :genre, :cover_letter, :user_id, :file_path)";
+                VALUES (:user_id, :submission_date, :title, :genre, :cover_letter, :file_path)";
 
-        $stmt = $db->prepare($user_sql);
+        $stmt = $db->prepare($sql);
 
-        $stmt->bindParam(":time_stamp", $submission_data["title"], PDO::PARAM_STR, 29);
+        $stmt->bindParam(":user_id", $user_id, PDO::PARAM_STR, 29);
+        $stmt->bindParam(":submission_date", $submission_date, PDO::PARAM_STR, 29);
         $stmt->bindParam(":title", $submission_data["title"], PDO::PARAM_STR, 29);
         $stmt->bindParam(":genre", $submission_data["genre"], PDO::PARAM_STR, 29);
-        $stmt->bindParam(":cover_letter",  $submission_data["cover_letter"], PDO::PARAM_STR, 29);
-        $stmt->bindParam(":file_path",  $submission_data["file_path"], PDO::PARAM_STR, 29);
-        $stmt->bindParam(":user_id",  $submission_data["user_id"], PDO::PARAM_STR, 29);
+        $stmt->bindParam(":cover_letter", $submission_data["cover_letter"], PDO::PARAM_STR, 29);
+        $stmt->bindParam(":file_path", $file_path, PDO::PARAM_STR, 29);
 
         $stmt->execute();
         echo "Submission received!";

@@ -91,14 +91,14 @@ include("inc/form-validation.php");
 		<div class="form-group">
 			<label for="cover-letter" class="col-sm-3 control-label">Cover Letter:</label>
 			<div class="col-sm-9">
-				<textarea name="cover-letter" class="form-control"></textarea>
+				<textarea name="cover_letter" class="form-control"></textarea>
 			</div>
 		</div>
 		<!--Files-->
 		<div class="form-group">
 			<label for="upload-submission" class="col-sm-3 control-label">Upload File:</label>
 			<div class="col-sm-9">
-				<input type="file" name="upload-submission" id="fileToUpload" class="form-control">
+				<input type="file" name="upload_submission" id="file-to-upload" class="form-control">
 			</div>
 		</div>
 		<!--Submit-->
