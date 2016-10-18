@@ -6,9 +6,17 @@
     border-radius: 0;
 }
 
-.login {
+#switch-icon {
     color: #2b1a3f;
     margin: 18px;
+}
+
+.table-row p {
+    margin: 5px 0;
+}
+
+.table-row:nth-of-type(even) {
+    background-color: #ccc;
 }
 
 

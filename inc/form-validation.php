@@ -24,7 +24,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $user_id = get_user_id($db, $user_data);
 
     if (!$user_id) {
-        add_user($db, $user_data);
+        $user_id = add_user($db, $user_data);
     }
 
     new_submission($db, $submission_data, $user_id);
@@ -60,6 +60,8 @@ function add_user($db, $user_data) {
 
         $stmt->execute();
         echo "Record created successfully";
+
+        return get_user_id($db, $user_data);
     }
     catch(PDOException $e) {
         echo $e->getMessage();
@@ -67,6 +69,7 @@ function add_user($db, $user_data) {
 }
 
 function new_submission($db, $submission_data, $user_id) {
+    var_dump($user_id);
     try {
         $submission_date = date("mdy");
         $file_path = $submission_date . $user_id;
@@ -90,25 +93,3 @@ function new_submission($db, $submission_data, $user_id) {
         echo $e->getMessage();
     }
 }
-
-// Validate form
-    // $empty_fields = array();
-
-    // foreach ($form_data as $key=>$val) {
-    //     if ($key !== "Address 2" && $val === "") {
-    //         $empty_fields[] = $key;
-    //     }
-    // }
-
-    // var_dump($empty_fields);
-
-    // if (count($empty_fields) > 0) {
-    //     $message = "The following fields are required: ";
-    //     $message .= implode(", ", $empty_fields);
-    //     $message .= ".";
-    //     echo $message;
-    // }
-
-// Create user record
-// Load submission including user id
-// }

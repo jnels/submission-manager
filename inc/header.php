@@ -15,7 +15,7 @@
                 </a>
             </div>
             <div class="nav navbar-nav navbar-right">
-                <a class="glyphicon glyphicon-user login"></a>
+                <a class="glyphicon" id="switch-icon"></a>
             </div>
         </div>
     </nav>

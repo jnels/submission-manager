@@ -55,7 +55,7 @@ include("inc/form-validation.php");
 		<div class="form-group">
 			<label for="phone" class="col-sm-3 control-label">Phone:</label>
 			<div class="col-sm-9">
-				<input type="tel" name="phone" class="form-control">
+				<input type="tel" name="phone" required class="form-control">
 			</div>
 		</div>
 		<!--Email-->
@@ -73,14 +73,14 @@ include("inc/form-validation.php");
 		<div class="form-group">
 			<label for="title" class="col-sm-3 control-label">Title:</label>
 			<div class="col-sm-9">
-				<input type="text" name="title" class="form-control">
+				<input type="text" name="title" required class="form-control">
 			</div>
 		</div>
 		<!--Genre-->
 		<div class="form-group">
 			<label for="genre" class="col-sm-3 control-label">Genre:</label>
 			<div class="col-sm-9">
-				<select name="genre" class="form-control">
+				<select name="genre" required class="form-control">
 					<?php
 						echo genre_dropdown();
 					?>
@@ -91,7 +91,7 @@ include("inc/form-validation.php");
 		<div class="form-group">
 			<label for="cover-letter" class="col-sm-3 control-label">Cover Letter:</label>
 			<div class="col-sm-9">
-				<textarea name="cover_letter" class="form-control"></textarea>
+				<textarea name="cover_letter" required class="form-control"></textarea>
 			</div>
 		</div>
 		<!--Files-->
