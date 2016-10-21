@@ -16,7 +16,7 @@ function generate_submission_list($db) {
     return $result;
 }
 
-// var_dump($submission_list);
+var_dump($submission_list);
 ?>
 
 <!-- Column headings -->
@@ -46,31 +46,30 @@ function generate_submission_list($db) {
 </div>
 
 <?php
-$values = ["submission_date", "name", "title", "genre", "file_path"];
+$values = ["submission_date"=>"Date", "name"=>"Name", "title"=>"Title", "genre"=>"Genre", "file_path"=>"File"];
 
 foreach($submission_list as $submission) { ?>
-    <div class="row table-row">
+    <div class="row table-row" id="<?php echo $submission["submission_id"]?>">
 
-        <?php foreach ($values as $field) { ?>
+        <?php foreach ($values as $field=>$heading) { ?>
             <div class="col-xs-12 col-md-2">
-                <p><span class="visible-xs visible-sm"><?php echo $field ?>: </span><?php echo $submission[$field]?></p>
+                <p><span class="visible-xs visible-sm"><?php echo $heading ?>: </span><?php echo $submission[$field]?></p>
             </div>
         <?php
         }
         ?>
-        <div class="col-xs-12 col-md-2">
-            <form method="post">
-                <select name="rating">
+        <div class="row">
+        <div class="col-xs-12 col-md-1">
+                <select name="rating" class="rating">
                     <option selected disable>-- Rate --</option>
-                    <option>1</option>
-                    <option>2</option>
-                    <option>3</option>
-                    <option>4</option>
-                    <option>5</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
                 </select>
-                <button><span class="glyphicon glyphicon-ok"></span>
-</button>
             </form>
+        </div>
         </div>
     </div>
 <?php
@@ -83,9 +82,3 @@ foreach($submission_list as $submission) { ?>
 <?php
 include("inc/footer.php");
 ?>
-
-
-
-
-
-

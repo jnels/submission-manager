@@ -19,6 +19,10 @@
     background-color: #ccc;
 }
 
+.active-row {
+    padding: 10px 0;
+}
+
 
 /* Form Elements * * * * * * * * */
 textarea{
