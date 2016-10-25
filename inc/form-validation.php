@@ -71,8 +71,8 @@ function add_user($db, $user_data) {
 function new_submission($db, $submission_data, $user_id) {
     var_dump($user_id);
     try {
-        $submission_date = date("m-d-y");
-        $file_path = $submission_date . $user_id;
+        $submission_date = date("m/d/y");
+        $file_path = date("mdy") . $submission_date . $user_id;
 
         $sql = "INSERT INTO submission_info (user_id, submission_date, title, genre, cover_letter, file_path)
                 VALUES (:user_id, :submission_date, :title, :genre, :cover_letter, :file_path)";

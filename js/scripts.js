@@ -13,7 +13,8 @@ $(function() {
 
 $(".rating").on("change", function() {
 //get value
-    var rating = $(this).val();
+    var $ratingArea = $(this);
+    var rating = $ratingArea.val();
     var submissionId = $(".active-row").attr("id");
 
     var submissionJSON = { 
@@ -26,10 +27,10 @@ $(".rating").on("change", function() {
         type: "POST",
         url: "ajax/rating.php",
         data: {
-            ratingData: submissionJSON
+            ratingData: JSON.stringify(submissionJSON)
         },
         success: function(response) {
-            console.log(response);
+            $ratingArea.parent().html("<p>" + response + "</p>")
         }
     });
 });
@@ -37,4 +38,8 @@ $(".rating").on("change", function() {
 $(".table-row").click(function(){
     $(".table-row").removeClass("active-row");
     $(this).addClass("active-row");
-})
+});
+
+$("#view-by-dropdown").on("change", function() {
+    $("#view-by-form").submit();
+});

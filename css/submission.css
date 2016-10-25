@@ -15,14 +15,9 @@
     margin: 5px 0;
 }
 
-.table-row:nth-of-type(even) {
+.table-row:nth-of-type(odd) {
     background-color: #ccc;
 }
-
-.active-row {
-    padding: 10px 0;
-}
-
 
 /* Form Elements * * * * * * * * */
 textarea{
