@@ -2,11 +2,12 @@
 include("inc/functions.php");
 include("inc/header.php");
 include("inc/form-validation.php");
+include("inc/upload-file.php");
 ?>
 
 <h1 class="text-center">Submit Electronically</h1>
 
-<form method="post" id="submission-form" class="form-horizontal">
+<form method="post" enctype="multipart/form-data" id="submission-form" class="form-horizontal">
 	<!--User info-->
 	<div class="col-xs-12 col-sm-6 col-lg-5 col-lg-offset-1">
 		<!--Name-->
@@ -98,7 +99,7 @@ include("inc/form-validation.php");
 		<div class="form-group">
 			<label for="upload-submission" class="col-sm-3 control-label">Upload File:</label>
 			<div class="col-sm-9">
-				<input type="file" name="upload_submission" id="file-to-upload" class="form-control">
+				<input type="file" name="file-to-upload" id="file-to-upload" class="form-control">
 			</div>
 		</div>
 		<!--Submit-->

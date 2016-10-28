@@ -4,16 +4,24 @@ include("inc/header.php");
 
 $view = "not-rated";
 
+if (isset($_POST["submission_id"])) {
+    $submission_to_delete = $_POST["submission_id"];
+    delete_submission($db, $submission_to_delete);
+}
+
 if (isset($_GET["view"])) {
     $view = $_GET["view"];
-    
-    if ($view === "rated") {
+}
 
-    } else if ($view === "not-rated") {
-
-    } else {
-
-    }
+function delete_submission($db, $submission_to_delete) {
+    $sql = "DELETE submission_info, rating 
+            FROM submission_info 
+            INNER JOIN rating 
+            ON submission_info.submission_id = rating.submission_id
+            WHERE submission_info.submission_id = :submission_to_delete";
+    $stmt = $db->prepare($sql);
+    $stmt->bindParam(":submission_to_delete", $submission_to_delete, PDO::PARAM_STR, 29);
+    $stmt->execute();
 }
 
 $rated_by_user = user_rated_submissions($db, 1);
@@ -120,7 +128,6 @@ $values = ["submission_date"=>"Date", "name"=>"Name", "title"=>"Title", "genre"=
 
 foreach($submission_list as $submission) { ?>
     <div class="row table-row" id="<?php echo $submission["submission_id"]?>">
-
         <?php foreach ($values as $field=>$heading) { ?>
             <div class="col-xs-12 col-md-2">
                 <p><span class="visible-xs visible-sm"><?php echo $heading ?>: </span><?php echo $submission[$field]?></p>
@@ -128,7 +135,7 @@ foreach($submission_list as $submission) { ?>
         <?php
         }
         ?>
-        <div class="col-xs-6 col-md-1">
+        <div class="col-xs-12 col-md-1">
                 <select name="rating" class="rating">
                     <option selected disable>-- Rate --</option>
                     <option value="1">1</option>
@@ -139,9 +146,10 @@ foreach($submission_list as $submission) { ?>
                 </select>
             </form>
         </div>
-        <div class="col-xs-6 col-md-1">
+        <div class="col-xs-12 col-md-1">
             <form method="post">
-                <button>Delete</button>
+                <input type="hidden" name="submission_id" class="hidden-id" <?php echo "value=" . $submission["submission_id"]?>> 
+                <button class="delete-btn">Delete</button>
             </form>
         </div>
     </div>

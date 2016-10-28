@@ -43,3 +43,13 @@ $(".table-row").click(function(){
 $("#view-by-dropdown").on("change", function() {
     $("#view-by-form").submit();
 });
+
+//Verifies deletion request, submits form if OK
+$(".delete-btn").click(function(e) {
+    e.preventDefault();
+    var $form = $(this).parent();
+
+    if (confirm("Are you sure you want to delete this record?")) {
+        $form.submit();
+    } 
+});
