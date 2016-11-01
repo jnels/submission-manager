@@ -1,8 +1,9 @@
 <?php
 require_once("connect.php");
+include("upload-file.php");
 
 //Sanitize form info
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $user_data = [
         "name"=>trim(filter_input(INPUT_POST,"name", FILTER_SANITIZE_STRING)),
         "email"=>trim(filter_input(INPUT_POST,"email", FILTER_SANITIZE_EMAIL)),
@@ -27,7 +28,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $user_id = add_user($db, $user_data);
     }
 
-    new_submission($db, $submission_data, $user_id);
+    $file_path = upload_file($db);
+    
+    if ($file_path) {
+        new_submission($db, $submission_data, $user_id, $file_path);
+    } 
 }
 
 function get_user_id($db, $user_data) {
@@ -68,11 +73,9 @@ function add_user($db, $user_data) {
     }
 }
 
-function new_submission($db, $submission_data, $user_id) {
-    var_dump($user_id);
+function new_submission($db, $submission_data, $user_id, $file_path) {
     try {
         $submission_date = date("m/d/y");
-        $file_path = date("mdy") . $submission_date . $user_id;
 
         $sql = "INSERT INTO submission_info (user_id, submission_date, title, genre, cover_letter, file_path)
                 VALUES (:user_id, :submission_date, :title, :genre, :cover_letter, :file_path)";

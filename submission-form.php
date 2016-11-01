@@ -2,7 +2,6 @@
 include("inc/functions.php");
 include("inc/header.php");
 include("inc/form-validation.php");
-include("inc/upload-file.php");
 ?>
 
 <h1 class="text-center">Submit Electronically</h1>
