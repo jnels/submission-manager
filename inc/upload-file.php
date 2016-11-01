@@ -1,10 +1,10 @@
 <?php
 
 function upload_file() {
-
     $target_dir = "uploads/" . date("my") . "/";
-    $target_file = $target_dir . basename($_FILES["file-to-upload"]["name"]);
-    $uploadOk = 1;
+    $file_name = format_file_name(basename($_FILES["file-to-upload"]["name"]));
+
+    $target_file = $target_dir . $file_name;
     $fileType = pathinfo($target_file, PATHINFO_EXTENSION);
 
     // Check if file already exists
@@ -39,18 +39,3 @@ function upload_file() {
         return false;
     }
 }
-
-// Allowed formats
-// function check_file_type($fileType) {
-//     //Store in database?
-//     $allowed_file_types = ["doc", "docx", "txt", "rtf", "pdf", "ppf"];
-
-//     $valid_extension = in_array($fileType, $allowed_file_types)
-
-//     foreach ($allowed_file_types as $type) {
-//         if ($fileType === $type) {
-//             return true;
-//         }
-//     }
-//     return false;
-// }

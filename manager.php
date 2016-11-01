@@ -37,6 +37,7 @@ function generate_submission_list($db, $rated_by_user, $view) {
 
     $result = [];
 
+
     if ($view === "not_rated") {
         while ($record = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $rated_already = already_rated($rated_by_user, $record["submission_id"]);
@@ -45,7 +46,15 @@ function generate_submission_list($db, $rated_by_user, $view) {
                 $result[] = $record;
             }
         }
-    } else {//if ($view === "all") {
+    } else if ($view === "rated") {
+        while ($record = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $rated_already = already_rated($rated_by_user, $record["submission_id"]);
+
+            if ($rated_already) {
+                $result[] = $record;
+            }
+        }
+    } else {
         $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
@@ -54,7 +63,6 @@ function generate_submission_list($db, $rated_by_user, $view) {
 
 function already_rated($rated_by_user, $submission_id) {
     foreach ($rated_by_user as $rated) {
-
         if ($rated === $submission_id) {
             return true;
         } 

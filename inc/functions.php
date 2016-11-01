@@ -28,3 +28,9 @@ function state_dropdown() {
     }
     return $state_list;
 }
+
+//Removes all characters but numbers and letters
+function format_file_name($str) {
+    $output = preg_replace('@[^0-9a-z\.]+@i', '_', ucwords($str));
+    return trim($output);
+}
