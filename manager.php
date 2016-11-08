@@ -24,8 +24,10 @@ function delete_submission($db, $submission_to_delete) {
     $stmt->execute();
 }
 
-$rated_by_user = user_rated_submissions($db, 1);
+$user_id = 1;
+$rated_by_user = user_rated_submissions($db, $user_id);
 $submission_list = generate_submission_list($db, $rated_by_user, $view);
+var_dump($submission_list);
 
 function generate_submission_list($db, $rated_by_user, $view) {
     $sql = "SELECT * 
@@ -36,7 +38,6 @@ function generate_submission_list($db, $rated_by_user, $view) {
     $stmt->execute();
 
     $result = [];
-
 
     if ($view === "not_rated") {
         while ($record = $stmt->fetch(PDO::FETCH_ASSOC)) {
@@ -54,6 +55,7 @@ function generate_submission_list($db, $rated_by_user, $view) {
                 $result[] = $record;
             }
         }
+        // var_dump($result);
     } else {
         $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
@@ -61,9 +63,12 @@ function generate_submission_list($db, $rated_by_user, $view) {
     return $result;
 }
 
+//Must adjust this loop here to check for rating and return rating if found
 function already_rated($rated_by_user, $submission_id) {
-    foreach ($rated_by_user as $rated) {
-        if ($rated === $submission_id) {
+    // foreach ($rated_by_user as $rated) {
+    foreach($rated_by_user as $rated) {
+        if ($rated["submission_id"] === $submission_id) {
+            var_dump($rated["rating"]);
             return true;
         } 
     }
@@ -71,14 +76,15 @@ function already_rated($rated_by_user, $submission_id) {
 }
 
 function user_rated_submissions($db, $reader_id) {
-    $sql = "SELECT submission_id
+    $sql = "SELECT submission_id, rating
             FROM rating 
             WHERE rating.reader_id = :reader_id";
     $stmt = $db->prepare($sql);
     $stmt->bindParam(":reader_id", $reader_id, PDO::PARAM_STR, 29);
     $stmt->execute();
 
-    $result = $stmt->fetchAll(PDO::FETCH_COLUMN);
+    $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    // var_dump($result);
     return $result;
 }
 
@@ -121,7 +127,7 @@ function user_rated_submissions($db, $reader_id) {
     </div>
     
     <?php 
-        if($submission_list["submission_id" === 1]) { ?>
+        if($user_id === 1) { ?>
             <div class="col-xs-6 col-md-1">
                 <p>Delete</p>
             </div>
