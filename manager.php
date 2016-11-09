@@ -27,7 +27,6 @@ function delete_submission($db, $submission_to_delete) {
 $user_id = 1;
 $rated_by_user = user_rated_submissions($db, $user_id);
 $submission_list = generate_submission_list($db, $rated_by_user, $view);
-var_dump($submission_list);
 
 function generate_submission_list($db, $rated_by_user, $view) {
     $sql = "SELECT * 
@@ -68,8 +67,7 @@ function already_rated($rated_by_user, $submission_id) {
     // foreach ($rated_by_user as $rated) {
     foreach($rated_by_user as $rated) {
         if ($rated["submission_id"] === $submission_id) {
-            var_dump($rated["rating"]);
-            return true;
+            return $rated["rating"];
         } 
     }
     return false;
@@ -104,32 +102,28 @@ function user_rated_submissions($db, $reader_id) {
 <!-- Column headings -->
 <div class="row hidden-xs hidden-sm table-row">
     <div class="col-xs-12 col-md-2">
-        <p>Date</p>
+        <p class="manager-heading">Date</p>
     </div>
 
     <div class="col-xs-12 col-md-2">
-        <p>Name</p>
+        <p class="manager-heading">Name</p>
     </div>
     <div class="col-xs-12 col-md-2">
-        <p>Title</p>
+        <p class="manager-heading">Title</p>
     </div>
 
     <div class="col-xs-12 col-md-2">
-        <p>Genre</p>
+        <p class="manager-heading">Genre</p>
     </div>
 
-    <div class="col-xs-12 col-md-2">
-        <p>File</p>
-    </div>
-
-    <div class="col-xs-6 col-md-1">
-        <p>Rating</p>
+    <div class="col-xs-6 col-md-2">
+        <p class="manager-heading">Rating</p>
     </div>
     
     <?php 
         if($user_id === 1) { ?>
-            <div class="col-xs-6 col-md-1">
-                <p>Delete</p>
+            <div class="col-xs-6 col-md-2">
+                <p class="manager-heading">Delete</p>
             </div>
     <?php
         }
@@ -138,18 +132,35 @@ function user_rated_submissions($db, $reader_id) {
 </div>
 
 <?php
-$values = ["submission_date"=>"Date", "name"=>"Name", "title"=>"Title", "genre"=>"Genre", "file_path"=>"File"];
 
 foreach($submission_list as $submission) { ?>
     <div class="row table-row" id="<?php echo $submission["submission_id"]?>">
-        <?php foreach ($values as $field=>$heading) { ?>
+
+        <?php  
+        $table_fields = [ 
+            "Date"=>$submission["submission_date"], 
+            "Name"=>$submission["name"],
+            "Title"=>"<a href='" . $submission["file_path"] . "'>" . $submission["title"] . "</a>",
+            "Genre"=>$submission["genre"],
+        ];
+        
+        foreach ($table_fields as $heading=>$field) { ?>
             <div class="col-xs-12 col-md-2">
-                <p><span class="visible-xs visible-sm"><?php echo $heading ?>: </span><?php echo $submission[$field]?></p>
+                <p><span class="visible-xs visible-sm manager-heading"><?php echo $heading ?>: </span><?php echo $field?></p>
             </div>
+
         <?php
         }
         ?>
-        <div class="col-xs-12 col-md-1">
+
+        <div class="col-xs-12 col-md-2">
+            <?php 
+                $rated_already = already_rated($rated_by_user, $submission["submission_id"]);
+
+                if ($rated_already) {
+                    echo "<p class='rated'>Your rating: " . $rated_already . "</p>"; 
+                }
+            ?>
                 <select name="rating" class="rating">
                     <option selected disable>-- Rate --</option>
                     <option value="1">1</option>
