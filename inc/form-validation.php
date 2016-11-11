@@ -4,6 +4,8 @@ include("upload-file.php");
 
 //Sanitize form info
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    $valid = false;
+  
     $user_data = [
         "name"=>trim(filter_input(INPUT_POST,"name", FILTER_SANITIZE_STRING)),
         "email"=>trim(filter_input(INPUT_POST,"email", FILTER_SANITIZE_EMAIL)),
@@ -13,7 +15,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         "state"=>trim(filter_input(INPUT_POST,"state", FILTER_SANITIZE_STRING)),
         "zip"=>trim(filter_input(INPUT_POST,"zip", FILTER_SANITIZE_STRING)),
         "phone"=>trim(filter_input(INPUT_POST,"phone", FILTER_SANITIZE_STRING)),
-        "email"=>trim(filter_input(INPUT_POST,"email", FILTER_SANITIZE_STRING))
+        "email"=>trim(filter_input(INPUT_POST,"email", FILTER_SANITIZE_EMAIL))
     ];
 
     $submission_data = [
@@ -22,17 +24,23 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         "cover_letter"=>trim(filter_input(INPUT_POST,"cover_letter", FILTER_SANITIZE_STRING))
     ];
 
+    if ($valid) {
+    
+    //Checks to see if user ID exists
     $user_id = get_user_id($db, $user_data);
 
+    //Creates new user if ID does not exist
     if (!$user_id) {
         $user_id = add_user($db, $user_data);
     }
 
+    //Uploads file
     $file_path = upload_file($db);
     
     if ($file_path) {
         new_submission($db, $submission_data, $user_id, $file_path);
     } 
+    }
 }
 
 function get_user_id($db, $user_data) {

@@ -19,6 +19,7 @@ function upload_file() {
         return false;
     }
 
+    // Check for file type
     $allowed_file_types = ["doc", "docx", "txt", "rtf", "pdf", "ppf"];
     $valid_extension = in_array($fileType, $allowed_file_types);
 
@@ -27,6 +28,7 @@ function upload_file() {
         return false;
     }
 
+    // Stores file in directory
     if (!is_dir($target_dir)) {
         mkdir($target_dir);
     }
