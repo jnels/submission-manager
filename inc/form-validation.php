@@ -4,7 +4,7 @@ include("upload-file.php");
 
 //Sanitize form info
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    $valid = false;
+    $valid = true;
   
     $user_data = [
         "name"=>trim(filter_input(INPUT_POST,"name", FILTER_SANITIZE_STRING)),
@@ -25,21 +25,20 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     ];
 
     if ($valid) {
-    
-    //Checks to see if user ID exists
-    $user_id = get_user_id($db, $user_data);
+        //Checks to see if user ID exists
+        $user_id = get_user_id($db, $user_data);
 
-    //Creates new user if ID does not exist
-    if (!$user_id) {
-        $user_id = add_user($db, $user_data);
-    }
+        //Creates new user if ID does not exist
+        if (!$user_id) {
+            $user_id = add_user($db, $user_data);
+        }
 
-    //Uploads file
-    $file_path = upload_file($db);
-    
-    if ($file_path) {
-        new_submission($db, $submission_data, $user_id, $file_path);
-    } 
+        //Uploads file
+        $file_path = upload_file($db);
+        
+        if ($file_path) {
+            new_submission($db, $submission_data, $user_id, $file_path);
+        } 
     }
 }
 

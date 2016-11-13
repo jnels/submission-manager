@@ -38,15 +38,7 @@ function generate_submission_list($db, $rated_by_user, $view) {
 
     $result = [];
 
-    if ($view === "not_rated") {
-        while ($record = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $rated_already = already_rated($rated_by_user, $record["submission_id"]);
-
-            if (!$rated_already) {
-                $result[] = $record;
-            }
-        }
-    } else if ($view === "rated") {
+    if ($view === "rated") {
         while ($record = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $rated_already = already_rated($rated_by_user, $record["submission_id"]);
 
@@ -54,23 +46,43 @@ function generate_submission_list($db, $rated_by_user, $view) {
                 $result[] = $record;
             }
         }
-        // var_dump($result);
-    } else {
+    } else if ($view === "all") {
         $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    }
+    } else {
+        while ($record = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $rated_already = already_rated($rated_by_user, $record["submission_id"]);
+
+            if (!$rated_already) {
+                $result[] = $record;
+            }
+        }
+    } 
 
     return $result;
 }
 
 //Must adjust this loop here to check for rating and return rating if found
 function already_rated($rated_by_user, $submission_id) {
-    // foreach ($rated_by_user as $rated) {
     foreach($rated_by_user as $rated) {
         if ($rated["submission_id"] === $submission_id) {
             return $rated["rating"];
         } 
     }
     return false;
+}
+
+function avg_ratings($db, $submission_id) {
+    $sql = "SELECT rating
+            FROM rating 
+            WHERE submission_id = :sub_id";
+    $stmt = $db->prepare($sql);
+    $stmt->bindParam(":sub_id", $submission_id , PDO::PARAM_STR, 29);
+    $stmt->execute();
+    $list = $stmt->fetchAll(PDO::FETCH_COLUMN, 0);
+
+    $result = array_sum($list)/count($list);
+
+    return $result;
 }
 
 function user_rated_submissions($db, $reader_id) {
@@ -154,11 +166,14 @@ foreach($submission_list as $submission) { ?>
         ?>
 
         <div class="col-xs-12 col-md-2">
+            <div class="rating-area">
             <?php 
                 $rated_already = already_rated($rated_by_user, $submission["submission_id"]);
 
                 if ($rated_already) {
-                    echo "<p class='rated'>Your rating: " . $rated_already . "</p>"; 
+                    $avg_rating = avg_ratings($db, $submission["submission_id"]);
+
+                    echo "<p class='rated'>Your Rating: $rated_already <br>($avg_rating average)</p>"; 
                 }
             ?>
                 <select name="rating" class="rating">
@@ -169,7 +184,7 @@ foreach($submission_list as $submission) { ?>
                     <option value="4">4</option>
                     <option value="5">5</option>
                 </select>
-            </form>
+            </div>
         </div>
         <div class="col-xs-12 col-md-1">
             <form method="post">

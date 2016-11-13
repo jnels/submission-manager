@@ -10,9 +10,8 @@ $(function() {
     }
 });
 
-
+// POSTS rating on dropdown change
 $(".rating").on("change", function() {
-//get value
     var $ratingArea = $(this);
     var rating = $ratingArea.val();
     var submissionId = $(".active-row").attr("id");
@@ -53,3 +52,8 @@ $(".delete-btn").click(function(e) {
         $form.submit();
     } 
 });
+
+// $('input, select, textarea').on("invalid", function(e) {
+//     e.preventDefault();
+//     $(this).css()
+// });
