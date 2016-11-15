@@ -14,24 +14,45 @@ class FormValidation
         
         foreach ($this->fields as $index=>$field) {
             if (empty($field)) {
-                $empty_fields[] = $index;
+                $empty_fields[] = ucfirst($index);
             }
         }
 
-        $output .= implode($empty_fields) . ".";
+        if (!empty($empty_fields)) {
+            $output .= implode(", ", $empty_fields) . ".";
+            echo $output;
+            return false;
+        } 
+
+        return true;
     }
     
     function isPhoneNumber() {
-        
+        $phone_number = preg_replace("/[^0-9.]+/", "", $this->fields["phone"]);
+
+        if(strlen($phone_number) != 10) {
+            echo "Invalid phone number. Please provide your 10 digit phone number.";
+            return false;
+        }
+
+        return true;
     }
     
     function isEmail() {
-        
+        if ($this->fields["email"] !== $_POST["email"]) {
+            echo "Invalid characters in email!";
+            return false;
+        } else if (!filter_var($this->fields["email"], FILTER_VALIDATE_EMAIL)) {
+            echo "Please enter a valid email address!";
+            return false;
+        }
+
+        return true;
     }
     
 }
 
-$array = ["name"=>"test", "address1"=>"er", "phone"=>"chicken", "email"=>""];
+// $array = ["name"=>"test", "address1"=>"er", "phone"=>"chicken", "email"=>""];
 
-$test = new FormValidation($array);
-$test->isEmpty();
+// $test = new FormValidation($array);
+// $test->isEmpty();

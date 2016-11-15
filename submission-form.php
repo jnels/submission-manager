@@ -64,7 +64,7 @@ include("inc/form-validation.php");
 		<div class="form-group">
 			<label for="email" class="col-sm-3 control-label">Email:</label>
 			<div class="col-sm-9">
-				<input type="email" name="email"  class="form-control required" value="<?php echo (isset($_POST['email'])) ? $_POST['email'] : "" ?>">
+				<input name="email"  class="form-control required" value="<?php echo (isset($_POST['email'])) ? $_POST['email'] : "" ?>">
 			</div>
 		</div>
 	</div>

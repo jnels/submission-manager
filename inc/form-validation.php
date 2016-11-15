@@ -1,10 +1,13 @@
 <?php
 require_once("connect.php");
 include("upload-file.php");
+include("validation.php");
+
+var_dump($_POST);
 
 //Sanitize form info
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    $valid = true;
+    $valid = false;
   
     $user_data = [
         "name"=>trim(filter_input(INPUT_POST,"name", FILTER_SANITIZE_STRING)),
@@ -24,6 +27,15 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         "cover_letter"=>trim(filter_input(INPUT_POST,"cover_letter", FILTER_SANITIZE_STRING))
     ];
 
+    $validation = new FormValidation(array_merge($user_data, $submission_data));
+
+
+    //Cycle through validation categories
+    $validation->isEmpty();
+    $validation->isPhoneNumber();
+    $validation->isEmail();
+
+
     if ($valid) {
         //Checks to see if user ID exists
         $user_id = get_user_id($db, $user_data);
@@ -39,6 +51,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         if ($file_path) {
             new_submission($db, $submission_data, $user_id, $file_path);
         } 
+
+        // header("Location: manager.php")
     }
 }
 
