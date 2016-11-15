@@ -33,8 +33,8 @@ function upload_file() {
         mkdir($target_dir);
     }
 
-    if (move_uploaded_file($_FILES["file_to_upload"]["tmp_name"], $target_file)) {
-        echo "Your file ". basename( $_FILES["file_to_upload"]["name"]). " has been uploaded. ";
+    if (move_uploaded_file($_FILES["file-to-upload"]["tmp_name"], $target_file)) {
+        echo "Your file ". basename( $_FILES["file-to-upload"]["name"]). " has been uploaded. ";
         return $target_file;
     } else {
         echo "Sorry, there was an error uploading your file.";

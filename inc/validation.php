@@ -51,8 +51,3 @@ class FormValidation
     }
     
 }
-
-// $array = ["name"=>"test", "address1"=>"er", "phone"=>"chicken", "email"=>""];
-
-// $test = new FormValidation($array);
-// $test->isEmpty();
