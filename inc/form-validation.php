@@ -71,7 +71,6 @@ function add_user($db, $user_data) {
         $stmt->bindParam(":email", $user_data["email"], PDO::PARAM_STR, 19);
 
         $stmt->execute();
-        echo "Record created successfully";
 
         return get_user_id($db, $user_data);
     }

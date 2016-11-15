@@ -17,11 +17,8 @@ class FormValidation
                 $empty_fields[] = $index;
             }
         }
-        
-        // if ($empty_fields)
-        // foreach ($emptyfields as $empty) {
-            
-        // }
+
+        $output .= implode($empty_fields) . ".";
     }
     
     function isPhoneNumber() {

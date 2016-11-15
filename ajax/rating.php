@@ -6,8 +6,6 @@ if(isset($_POST["ratingData"])) {
     $rating_data = json_decode($post_data, true);
     $is_duplicate = check_ratings($rating_data, $db);
 
-    var_dump($rating_data);
-
     if ($is_duplicate) {
         update_rating($rating_data, $db);
     } else {

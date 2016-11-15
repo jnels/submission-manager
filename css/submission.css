@@ -20,12 +20,17 @@
 }
 
 /* Form Elements * * * * * * * * */
-textarea{
+textarea {
     min-height: 115px;
 }
 
 .manager-heading {
     font-weight: bold;
+}
+
+/* Manager * * * * * * * * * * * */
+.rating {
+    width: 95px;
 }
 
 /* Media Queries * * * * * * * * */

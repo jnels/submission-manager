@@ -175,9 +175,9 @@ foreach($submission_list as $submission) { ?>
 
                     echo "<p class='rated'>Your Rating: $rated_already <br>($avg_rating average)</p>"; 
                 }
-            ?>
+            ?>  
                 <select name="rating" class="rating">
-                    <option selected disable>-- Rate --</option>
+                    <option selected disable>--<?php echo ($rated_already) ? " Revise " : "- Rate -" ?>--</option>
                     <option value="1">1</option>
                     <option value="2">2</option>
                     <option value="3">3</option>
