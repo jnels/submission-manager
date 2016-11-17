@@ -1,3 +1,4 @@
+// Toggles icon in menu
 $(function() {
     var $icon = $("#switch-icon");
 
@@ -34,11 +35,12 @@ $(".rating").on("change", function() {
     });
 });
 
-$(".table-row").click(function(){
-    $(".table-row").removeClass("active-row");
-    $(this).addClass("active-row");
-});
+// $(".table-row").click(function(){
+//     $(".table-row").removeClass("active-row");
+//     $(this).addClass("active-row");
+// });
 
+// Controls view in manager
 $("#view-by-dropdown").on("change", function() {
     $("#view-by-form").submit();
 });
@@ -52,8 +54,3 @@ $(".delete-btn").click(function(e) {
         $form.submit();
     } 
 });
-
-// $('input, select, textarea').on("invalid", function(e) {
-//     e.preventDefault();
-//     $(this).css()
-// });

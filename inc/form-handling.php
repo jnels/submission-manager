@@ -1,14 +1,11 @@
 <?php
 require_once("connect.php");
 include("upload-file.php");
-include("validation.php");
-
-var_dump($_POST);
+include("classes/validation.php");
 
 //Sanitize form info
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    $valid = false;
-  
+
     $user_data = [
         "name"=>trim(filter_input(INPUT_POST,"name", FILTER_SANITIZE_STRING)),
         "email"=>trim(filter_input(INPUT_POST,"email", FILTER_SANITIZE_EMAIL)),
@@ -29,14 +26,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     $validation = new FormValidation(array_merge($user_data, $submission_data));
 
+    $is_valid = $validation->runValidation();
 
-    //Cycle through validation categories
-    $validation->isEmpty();
-    $validation->isPhoneNumber();
-    $validation->isEmail();
-
-
-    if ($valid) {
+    if ($is_valid) {
         //Checks to see if user ID exists
         $user_id = get_user_id($db, $user_data);
 
@@ -51,9 +43,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         if ($file_path) {
             new_submission($db, $submission_data, $user_id, $file_path);
         } 
-
-        // header("Location: manager.php")
-    }
+    } 
 }
 
 function get_user_id($db, $user_data) {
@@ -110,7 +100,6 @@ function new_submission($db, $submission_data, $user_id, $file_path) {
         $stmt->bindParam(":file_path", $file_path, PDO::PARAM_STR, 29);
 
         $stmt->execute();
-        echo "Submission received!";
     }
     catch(PDOException $e) {
         echo $e->getMessage();

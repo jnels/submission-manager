@@ -28,6 +28,24 @@ textarea {
     font-weight: bold;
 }
 
+.error, success {
+    width: 100%;
+    background-color: orange;
+    box-shadow: 1px 1px 1px #ccc;
+    padding: 10px;
+    text-align: center;
+    border-radius: 10px;
+    font-weight: bold;
+}
+
+.error {
+    background-color: orange;
+}
+
+.success {
+    background-color: lightgreen;
+}
+
 /* Manager * * * * * * * * * * * */
 .rating {
     width: 95px;

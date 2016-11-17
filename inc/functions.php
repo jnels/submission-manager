@@ -4,7 +4,6 @@ function genre_dropdown() {
     include("connect.php");
 
     $html = "<option selected value=''>-- Select Genre --";
-    $html .= "<option>Chicken</option>";
     $genres = array();
     $sql = "SELECT genre FROM genre ORDER BY genre";
 

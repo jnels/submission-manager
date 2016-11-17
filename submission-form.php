@@ -1,7 +1,7 @@
 <?php
 include("inc/functions.php");
-include("inc/header.php");
-include("inc/form-validation.php");
+include("inc/header.php"); 
+include("inc/form-handling.php");
 ?>
 
 <h1 class="text-center">Submit Electronically</h1>
@@ -42,7 +42,7 @@ include("inc/form-validation.php");
 			<label for="state" class="col-sm-3 control-label">State:</label>
 			<div class="col-sm-9">
 				<select name="state" class="form-control required" required>
-					<?php echo state_dropdown()?>
+					<?php echo state_dropdown() ?>
 				</select>
 			</div>
 		</div>
@@ -82,7 +82,7 @@ include("inc/form-validation.php");
 		<div class="form-group">
 			<label for="genre" class="col-sm-3 control-label">Genre:</label>
 			<div class="col-sm-9">
-				<select name="genre" class="form-control required">
+				<select name="genre" class="form-control required" value="<?php echo (isset($_POST['genre'])) ? $_POST['genre'] : "" ?>" >
 					<?php
 						echo genre_dropdown();
 					?>

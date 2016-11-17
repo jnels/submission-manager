@@ -13,6 +13,10 @@ if (isset($_GET["view"])) {
     $view = $_GET["view"];
 }
 
+$user_id = 1;
+$rated_by_user = user_rated_submissions($db, $user_id);
+$submission_list = generate_submission_list($db, $rated_by_user, $view);
+
 function delete_submission($db, $submission_to_delete) {
     $sql = "DELETE submission_info, rating 
             FROM submission_info 
@@ -22,11 +26,9 @@ function delete_submission($db, $submission_to_delete) {
     $stmt = $db->prepare($sql);
     $stmt->bindParam(":submission_to_delete", $submission_to_delete, PDO::PARAM_STR, 29);
     $stmt->execute();
-}
 
-$user_id = 1;
-$rated_by_user = user_rated_submissions($db, $user_id);
-$submission_list = generate_submission_list($db, $rated_by_user, $view);
+    var_dump($submission_to_delete);
+}
 
 function generate_submission_list($db, $rated_by_user, $view) {
     $sql = "SELECT * 
@@ -61,7 +63,7 @@ function generate_submission_list($db, $rated_by_user, $view) {
     return $result;
 }
 
-//Must adjust this loop here to check for rating and return rating if found
+//Returns already rated submissions
 function already_rated($rated_by_user, $submission_id) {
     foreach($rated_by_user as $rated) {
         if ($rated["submission_id"] === $submission_id) {
@@ -71,6 +73,7 @@ function already_rated($rated_by_user, $submission_id) {
     return false;
 }
 
+// Returns avg rating for rated submissions
 function avg_ratings($db, $submission_id) {
     $sql = "SELECT rating
             FROM rating 
@@ -94,7 +97,6 @@ function user_rated_submissions($db, $reader_id) {
     $stmt->execute();
 
     $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    // var_dump($result);
     return $result;
 }
 

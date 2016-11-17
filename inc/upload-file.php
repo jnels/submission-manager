@@ -7,15 +7,20 @@ function upload_file() {
     $target_file = $target_dir . $file_name;
     $fileType = pathinfo($target_file, PATHINFO_EXTENSION);
 
+    if (!$file_name) {
+        echo "<p class='error'>Oops! It looks like you forgot to attach a file.</p>";
+        return false;
+    }
+
     // Check if file already exists
     if (file_exists($target_file)) {
-        echo "Sorry, file name already exists.";
+        echo "<p class='error'>Sorry, file name already exists.</p>";
         return false;
     }
 
     // Check file size
-    if ($_FILES["file_to_upload"]["size"] > 50000000) {
-        echo "Your file is way too large--you need to cut it!";
+    if ($_FILES["file-to-upload"]["size"] > 50000000) {
+        echo "<p class='error'>Your file is way too large--you need to cut it!</p>";
         return false;
     }
 
@@ -24,7 +29,7 @@ function upload_file() {
     $valid_extension = in_array($fileType, $allowed_file_types);
 
     if(!$valid_extension) {
-        echo "Please check file type.";
+        echo "<p class='error'>Please check file type.</p>";
         return false;
     }
 
@@ -34,12 +39,10 @@ function upload_file() {
     }
 
     if (move_uploaded_file($_FILES["file-to-upload"]["tmp_name"], $target_file)) {
-        echo "Your file ". basename( $_FILES["file-to-upload"]["name"]). " has been uploaded. ";
+        echo "<p class='success'>Your file " . basename( $_FILES["file-to-upload"]["name"]) . " has been successfully uploaded.</p>";
         return $target_file;
     } else {
-        echo "Sorry, there was an error uploading your file.";
+        echo "<p class='error'>Sorry, there was an error uploading your file.</p>";
         return false;
     }
 }
-
-var_dump($_FILES);

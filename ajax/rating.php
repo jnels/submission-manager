@@ -1,6 +1,8 @@
 <?php
 require_once("../inc/connect.php");
 
+// Processes AJAX request when rating dropdown is changes
+
 if(isset($_POST["ratingData"])) {
     $post_data = $_POST["ratingData"];
     $rating_data = json_decode($post_data, true);
@@ -49,6 +51,8 @@ function new_rating(array $rating_data, $db) {
     $stmt->bindParam(":reader_id", $rating_data["readerId"], PDO::PARAM_STR, 29);
 
     $stmt->execute();
+
+    echo "Thank you!";
 }
 
 // Update
