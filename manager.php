@@ -4,8 +4,8 @@ include("inc/header.php");
 
 $view = "not-rated";
 
-if (isset($_POST["submission_id"])) {
-    $submission_to_delete = $_POST["submission_id"];
+if (isset($_POST["submission_to_delete"])) {
+    $submission_to_delete = $_POST["submission_to_delete"];
     delete_submission($db, $submission_to_delete);
 }
 
@@ -20,14 +20,13 @@ $submission_list = generate_submission_list($db, $rated_by_user, $view);
 function delete_submission($db, $submission_to_delete) {
     $sql = "DELETE submission_info, rating 
             FROM submission_info 
-            INNER JOIN rating 
+            LEFT OUTER JOIN rating 
             ON submission_info.submission_id = rating.submission_id
             WHERE submission_info.submission_id = :submission_to_delete";
+
     $stmt = $db->prepare($sql);
     $stmt->bindParam(":submission_to_delete", $submission_to_delete, PDO::PARAM_STR, 29);
     $stmt->execute();
-
-    var_dump($submission_to_delete);
 }
 
 function generate_submission_list($db, $rated_by_user, $view) {
@@ -190,7 +189,7 @@ foreach($submission_list as $submission) { ?>
         </div>
         <div class="col-xs-12 col-md-1">
             <form method="post">
-                <input type="hidden" name="submission_id" class="hidden-id" <?php echo "value=" . $submission["submission_id"]?>> 
+                <input type="hidden" name="submission_to_delete" class="hidden-id" <?php echo "value=" . $submission["submission_id"]?>> 
                 <button class="delete-btn">Delete</button>
             </form>
         </div>
