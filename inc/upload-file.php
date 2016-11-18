@@ -39,7 +39,7 @@ function upload_file() {
     }
 
     if (move_uploaded_file($_FILES["file-to-upload"]["tmp_name"], $target_file)) {
-        echo "<p class='success'>Your file " . basename( $_FILES["file-to-upload"]["name"]) . " has been successfully uploaded.</p>";
+        echo "<p class='success' id='submitted'>Your submission has been received!</p>";
         return $target_file;
     } else {
         echo "<p class='error'>Sorry, there was an error uploading your file.</p>";

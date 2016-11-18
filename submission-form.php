@@ -41,7 +41,7 @@ include("inc/form-handling.php");
 		<div class="form-group">
 			<label for="state" class="col-sm-3 control-label">State:</label>
 			<div class="col-sm-9">
-				<select name="state" class="form-control required" required>
+				<select name="state" class="form-control required">
 					<?php echo state_dropdown() ?>
 				</select>
 			</div>

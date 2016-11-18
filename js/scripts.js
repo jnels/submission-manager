@@ -35,10 +35,17 @@ $(".rating").on("change", function() {
     });
 });
 
+// Sets active row
 $(".table-row").click(function(){
     $(".table-row").removeClass("active-row");
     $(this).addClass("active-row");
 });
+
+// Resets form on successful submission
+if (document.getElementById("submitted")) {
+    $("input, select").val("");
+    $("textarea").text("");
+}
 
 // Controls view in manager
 $("#view-by-dropdown").on("change", function() {
