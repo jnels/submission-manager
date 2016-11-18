@@ -1,5 +1,5 @@
 # Submission Manager
-## Code Louisville PHP Project
+** Code Louisville PHP Project **
 
 This CRUD app is a over-simplified submission manager for literary submissions. It's primary purpose is to fulfill all the requirements for Code Louisville and facilitate learning. 
 
