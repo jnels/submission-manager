@@ -1,6 +1,7 @@
 <?php
 require_once("inc/connect.php");
 include("inc/header.php");
+include("inc/functions.php");
 
 $view = "not-rated";
 
@@ -16,88 +17,6 @@ if (isset($_GET["view"])) {
 $user_id = 1;
 $rated_by_user = user_rated_submissions($db, $user_id);
 $submission_list = generate_submission_list($db, $rated_by_user, $view);
-
-function delete_submission($db, $submission_to_delete) {
-    $sql = "DELETE submission_info, rating 
-            FROM submission_info 
-            LEFT OUTER JOIN rating 
-            ON submission_info.submission_id = rating.submission_id
-            WHERE submission_info.submission_id = :submission_to_delete";
-
-    $stmt = $db->prepare($sql);
-    $stmt->bindParam(":submission_to_delete", $submission_to_delete, PDO::PARAM_STR, 29);
-    $stmt->execute();
-}
-
-function generate_submission_list($db, $rated_by_user, $view) {
-    $sql = "SELECT * 
-            FROM submission_info
-            JOIN user_info
-            ON submission_info.user_id = user_info.user_id";
-    $stmt = $db->prepare($sql);
-    $stmt->execute();
-
-    $result = [];
-
-    if ($view === "rated") {
-        while ($record = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $rated_already = already_rated($rated_by_user, $record["submission_id"]);
-
-            if ($rated_already) {
-                $result[] = $record;
-            }
-        }
-    } else if ($view === "all") {
-        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    } else {
-        while ($record = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $rated_already = already_rated($rated_by_user, $record["submission_id"]);
-
-            if (!$rated_already) {
-                $result[] = $record;
-            }
-        }
-    } 
-
-    return $result;
-}
-
-//Returns already rated submissions
-function already_rated($rated_by_user, $submission_id) {
-    foreach($rated_by_user as $rated) {
-        if ($rated["submission_id"] === $submission_id) {
-            return $rated["rating"];
-        } 
-    }
-    return false;
-}
-
-// Returns avg rating for rated submissions
-function avg_ratings($db, $submission_id) {
-    $sql = "SELECT rating
-            FROM rating 
-            WHERE submission_id = :sub_id";
-    $stmt = $db->prepare($sql);
-    $stmt->bindParam(":sub_id", $submission_id , PDO::PARAM_STR, 29);
-    $stmt->execute();
-    $list = $stmt->fetchAll(PDO::FETCH_COLUMN, 0);
-
-    $result = array_sum($list)/count($list);
-
-    return $result;
-}
-
-function user_rated_submissions($db, $reader_id) {
-    $sql = "SELECT submission_id, rating
-            FROM rating 
-            WHERE rating.reader_id = :reader_id";
-    $stmt = $db->prepare($sql);
-    $stmt->bindParam(":reader_id", $reader_id, PDO::PARAM_STR, 29);
-    $stmt->execute();
-
-    $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    return $result;
-}
 
 ?>
 
@@ -177,6 +96,7 @@ foreach($submission_list as $submission) { ?>
                     echo "<p class='rated'>Your Rating: $rated_already <br>($avg_rating average)</p>"; 
                 }
             ?>  
+                <span class="visible-xs visible-sm manager-heading">Rating:</span>
                 <select name="rating" class="rating">
                     <option selected disable>--<?php echo ($rated_already) ? " Revise " : "- Rate -" ?>--</option>
                     <option value="1">1</option>

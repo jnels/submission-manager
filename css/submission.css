@@ -11,14 +11,6 @@
     margin: 18px;
 }
 
-.table-row p {
-    margin: 5px 0;
-}
-
-.table-row:nth-of-type(odd) {
-    background-color: #ccc;
-}
-
 /* Form Elements * * * * * * * * */
 textarea {
     min-height: 115px;
@@ -28,9 +20,8 @@ textarea {
     font-weight: bold;
 }
 
-.error, success {
+.error, .success {
     width: 100%;
-    background-color: orange;
     box-shadow: 1px 1px 1px #ccc;
     padding: 10px;
     text-align: center;
@@ -47,8 +38,27 @@ textarea {
 }
 
 /* Manager * * * * * * * * * * * */
+
+.table-row p {
+    margin: 5px 0;
+}
+
+.table-row:nth-of-type(odd) {
+    background-color: #ccc;
+}
+
 .rating {
     width: 95px;
+    height: 25px;
+}
+
+.rating-area, .delete-btn {
+    margin: 10px 0;
+}
+
+.delete-btn {
+    border-radius: 4px;
+    height: 25px;
 }
 
 /* Media Queries * * * * * * * * */
